@@ -1,67 +1,38 @@
 import { useState } from 'react';
 
-const FeedbackBtn = ({ handleClick, btn }) => {
-    return (
-        <>
-            <button onClick={handleClick}>{btn}</button>
-        </>
-    )
-}
-
-const Statistics = ({ good, neutral, bad, all, average, positive }) => {
-    return (
-        <>
-            <h1>Statistics</h1>
-            <p>Good : {good}</p>
-            <p>Neutral : {neutral}</p>
-            <p>Bad : {bad}</p>
-            <p>All : {all}</p>
-            <p>Average : {average}</p>
-            <p>Positive : {positive}</p>
-        </>
-    )
-}
-
-
 const App = () => {
-    const [good, setGood] = useState(0);
-    const [neutral, setNeutral] = useState(0);
-    const [bad, setBad] = useState(0);
-    const [all, setAll] = useState(0);
-    const [average, setAverage] = useState(0);
-    const [positive, setPositive] = useState(0);
-    
-    const handleGood = () => {
-        const upGood = good + 1;
-        setGood(upGood);
-        handleStatistics();
+    const anecdotes = [
+        'If it hurts, do it more often.',
+        'Adding manpower to a late software project makes it later!',
+        'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+        'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+        'Premature optimization is the root of all evil.',
+        'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+        'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+        'The only way to go fast, is to go well.'
+    ]
 
-    }
-    const handleNeutral = () => {
-        const upNeutral = neutral + 1;
-        setNeutral(upNeutral);
-        handleStatistics();
-    }
-    const handleBad = () => {
-        const upBad = bad + 1;
-        setBad(upBad);
-        handleStatistics();
-    }
+    const [selected, setSelected] = useState(0);
+    const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
 
-    const handleStatistics = () => {
-        setAll(good + bad + neutral);
-        setAverage((good - bad) / all);
-        setPositive((good / all) * 100);
+    const handlerClick = () => {
+        const randomNumber = Math.floor(Math.random() * anecdotes.length);
+        setSelected(randomNumber)
+    };
+
+    const handleVote = () => {
+        const votesCp = [...votes];
+        votesCp[selected] += 1;
+        setVotes(votesCp);
     }
-
-
+    console.log(selected)
+    console.log(votes)
     return (
         <>
-            <h1>Give Feedback</h1>
-            <FeedbackBtn handleClick={handleGood} btn={"good"}></FeedbackBtn>
-            <FeedbackBtn handleClick={handleNeutral} btn={"neutral"}></FeedbackBtn>
-            <FeedbackBtn handleClick={handleBad} btn={"bad"}></FeedbackBtn>
-            <Statistics good={good} neutral={neutral} bad={bad} all={all} average={average} positive={positive}></Statistics>
+            <div>{anecdotes[selected]}</div>
+            <button onClick={handlerClick}>Next Annecdote</button>
+            <button onClick={handleVote}>Vote</button>
+            <p>{}</p>
         </>
     );
 }
